@@ -4,9 +4,10 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 // Routes
-const apiRoutes = require('./routes/api');
+const apiRoutes = require('./routes/routes');
 // Test runner
 const runner = require('./test-runner');
+const Project = require('./models/project');
 
 const app = express();
 
@@ -38,9 +39,19 @@ app.set('view engine', 'ejs');
 app.get('/', (req, res) => res.render('index'));
 
 // Sample front-end
-app
-  .route('/:project/')
-  .get((req, res) => res.render('issues', { projectName: req.params.project }));
+app.route('/:project/').get(async (req, res) => {
+  const projectName = req.params.project;
+
+  try {
+    const foundProject = await Project.findOne({ name: projectName }).populate(
+      'issues'
+    );
+    console.log(foundProject);
+    res.render('issues', { projectName, issues: foundProject.issues });
+  } catch (err) {
+    if (err) throw err;
+  }
+});
 
 // Routing for API
 app.use('/', apiRoutes);
