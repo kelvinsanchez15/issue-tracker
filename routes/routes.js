@@ -5,24 +5,24 @@ const express = require('express');
 const router = express.Router();
 
 // Dummy data
-const dummyIssueData = [
-  {
-    issue_title: 'Pressing ALT + F4 does not solve my problem',
-    issue_text:
-      'I was watching a stream and my connection was failing, they suggested in the chat to press ALT + F4 to solve my problem, when I did it, everything closed.',
-    created_by: 'ComputerNewbie',
-  },
-  {
-    issue_title: 'Another Issue',
-    issue_text: 'This is a issue text description',
-    created_by: 'Someone',
-  },
-  {
-    issue_title: 'Another Issue 2',
-    issue_text: 'This is a issue text description2',
-    created_by: 'Someone2',
-  },
-];
+// const dummyIssueData = [
+//   {
+//     issue_title: 'Pressing ALT + F4 does not solve my problem',
+//     issue_text:
+//       'I was watching a stream and my connection was failing, they suggested in the chat to press ALT + F4 to solve my problem, when I did it, everything closed.',
+//     created_by: 'ComputerNewbie',
+//   },
+//   {
+//     issue_title: 'Another Issue',
+//     issue_text: 'This is a issue text description',
+//     created_by: 'Someone',
+//   },
+//   {
+//     issue_title: 'Another Issue 2',
+//     issue_text: 'This is a issue text description2',
+//     created_by: 'Someone2',
+//   },
+// ];
 
 // Create project
 // const createTestProject = async () => {

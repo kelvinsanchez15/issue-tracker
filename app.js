@@ -44,50 +44,49 @@ app.get('/', (req, res) =>
   })
 );
 
-// Sample front-end
-app.get('/:project/issues', async (req, res) => {
-  const projectName = req.params.project;
+//
+app
+  .route('/:project/issues')
+  // GET render all issues by project
+  .get(async (req, res) => {
+    const projectName = req.params.project;
 
-  try {
-    // Search project in the database and populate all issues
-    const foundProject = await Project.findOne({ name: projectName }).populate(
-      'issues'
-    );
-    // Save issues in a variable
-    const issues = foundProject ? foundProject.issues : null;
+    try {
+      // Search project in the database and populate all issues
+      const foundProject = await Project.findOne({
+        name: projectName,
+      }).populate('issues');
+      // Save issues in a variable
+      const issues = foundProject ? foundProject.issues : null;
 
-    res.render('issues', {
-      projectName,
-      issues,
-    });
-  } catch (err) {
-    if (err) throw err;
-  }
-});
+      res.render('issues', {
+        projectName,
+        issues,
+      });
+    } catch (err) {
+      if (err) throw err;
+    }
+  })
 
-// POST new issue
-app.post('/:project/issues', async (req, res) => {
-  const projectName = req.params.project;
+  // POST new issue
+  .post(async (req, res) => {
+    const projectName = req.params.project;
 
-  try {
-    // Create Issue
-    const newIssue = await Issue.create(req.body.issue);
-    console.log(newIssue);
-    // Find project by name and push new issue
-    const foundProject = await Project.findOneAndUpdate(
-      { name: projectName },
-      { $push: { issues: newIssue } },
-      { new: true, useFindAndModify: false }
-    );
-    console.log(foundProject);
-    res.redirect(`/${projectName}/issues`);
-  } catch (err) {
-    res.redirect(`/${projectName}/issues/new`);
-    throw err;
-  }
-
-  console.log(req.body.issue);
-});
+    try {
+      // Create new issue
+      const newIssue = await Issue.create(req.body.issue);
+      // Find project by name and push new issue
+      await Project.findOneAndUpdate(
+        { name: projectName },
+        { $push: { issues: newIssue } },
+        { new: true, useFindAndModify: false }
+      );
+      res.redirect(`/${projectName}/issues`);
+    } catch (err) {
+      res.redirect(`/${projectName}/issues/new`);
+      throw err;
+    }
+  });
 
 // GET render new issue page
 app.get('/:project/issues/new', async (req, res) => {
