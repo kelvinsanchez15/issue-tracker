@@ -1,0 +1,25 @@
+doctype html
+html
+  head
+    title= projectName
+    link(rel='stylesheet', href='/style.css')
+  body
+    div
+      h1= "Issues in /" + projectName
+      a(href=`/${projectName}/issues/new`)
+        input(type="button", value="New Issue")
+    div.container
+      if issues
+        each issue in issues
+          div            
+            h3= issue.issue_title
+            p= issue.issue_text
+            p= issue.created_by
+            p= issue.created_on
+            if open
+              p= `opened ${issue.created_on} by ${issue.created_by}`
+            else
+              p= `by ${issue.created_by} was closed ${issue.created_on}`
+      else
+        div
+          h3 There's no issues in this project

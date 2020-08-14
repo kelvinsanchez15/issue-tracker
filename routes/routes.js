@@ -1,6 +1,6 @@
 const express = require('express');
-const Issue = require('../models/issue');
-const Project = require('../models/project');
+// const Issue = require('../models/issue');
+// const Project = require('../models/project');
 
 const router = express.Router();
 
@@ -25,36 +25,36 @@ const dummyIssueData = [
 ];
 
 // Create project
-const createTestProject = async () => {
-  const testProject = await Project.create({ name: 'apitest' });
-  console.log(testProject);
-};
+// const createTestProject = async () => {
+//   const testProject = await Project.create({ name: 'apitest' });
+//   console.log(testProject);
+// };
 
 // createTestProject();
 
 // Create issue
-const createTestIssue = async () => {
-  // Create Issue
-  const testIssue = await Issue.create(dummyIssueData[2]);
-  console.log(testIssue);
-  // Find project by name and push new issue
-  const foundProject = await Project.findOneAndUpdate(
-    { name: 'apitest' },
-    { $push: { issues: testIssue } },
-    { new: true, useFindAndModify: false }
-  );
-  console.log(foundProject);
-};
+// const createTestIssue = async () => {
+//   // Create Issue
+//   const testIssue = await Issue.create(dummyIssueData[2]);
+//   console.log(testIssue);
+//   // Find project by name and push new issue
+//   const foundProject = await Project.findOneAndUpdate(
+//     { name: 'apitest' },
+//     { $push: { issues: testIssue } },
+//     { new: true, useFindAndModify: false }
+//   );
+//   console.log(foundProject);
+// };
 
 // createTestIssue();
 
 // Find by project name and populate issues
-const findByNameAndPopulate = async () => {
-  const foundProject = await Project.findOne({ name: 'apitest' }).populate(
-    'issues'
-  );
-  console.log(foundProject);
-};
+// const findByNameAndPopulate = async () => {
+//   const foundProject = await Project.findOne({ name: 'apitest' }).populate(
+//     'issues'
+//   );
+//   console.log(foundProject);
+// };
 
 // findByNameAndPopulate();
 
