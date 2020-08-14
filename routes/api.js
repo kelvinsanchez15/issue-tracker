@@ -1,27 +1,27 @@
-const Issue = require("../models/issue");
-const Project = require("../models/project");
+const express = require('express');
+const Issue = require('../models/issue');
+const Project = require('../models/project');
 
-const expect = require("chai").expect;
-// const MongoClient = require("mongodb");
-// const ObjectId = require("mongodb").ObjectID;
+const router = express.Router();
 
-module.exports = function (app) {
-  app
-    .route("/api/issues/:project")
+router
+  .route('/api/issues/:project')
 
-    .get(function (req, res) {
-      const project = req.params.project;
-    })
+  .get((req, res) => {
+    const { project } = req.params;
+    console.log(project);
+  })
 
-    .post(function (req, res) {
-      const project = req.params.project;
-    })
+  .post((req, res) => {
+    const { project } = req.params;
+  })
 
-    .put(function (req, res) {
-      const project = req.params.project;
-    })
+  .put((req, res) => {
+    const { project } = req.params;
+  })
 
-    .delete(function (req, res) {
-      const project = req.params.project;
-    });
-};
+  .delete((req, res) => {
+    const { project } = req.params;
+  });
+
+module.exports = router;
