@@ -1,0 +1,19 @@
+/* * {
+  margin: 0px;
+  padding: 0px;
+} */
+
+.Box-row {
+  border-top: 1px solid #e1e4e8;
+}
+
+.flex-auto {
+  flex: auto !important;
+}
+/* .Box-row:first-of-type {
+
+} */
+
+#form {
+  width: 50%;
+}

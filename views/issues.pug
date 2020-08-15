@@ -1,25 +1,37 @@
 doctype html
 html
   head
-    title= projectName
-    link(rel='stylesheet', href='/style.css')
-  body
-    div
-      h1= "Issues in /" + projectName
-      a(href=`/${projectName}/issues/new`)
-        input(type="button", value="New Issue")
+    include includes/head.pug
+    title= projectName    
+  body    
     div.container
+      div
+        h1= "Issues in /" + projectName
+        a(href=`/${projectName}/issues/new`)
+          input(class="btn btn-success" type="button", value="New Issue")
       if issues
         each issue in issues
-          div            
-            h3= issue.issue_title
-            p= issue.issue_text
-            p= issue.created_by
-            p= issue.created_on
-            if open
-              p= `opened ${issue.created_on} by ${issue.created_by}`
-            else
-              p= `by ${issue.created_by} was closed ${issue.created_on}`
+          div.row.d-flex.Box-row.p0-mt-0
+            //- div.flex-shrink-0.pt-2.pl-3
+              span !
+            div.flex-auto.min-width-0.p-2.pr-3.pr-md-2            
+              span.h4= issue.issue_title
+              div.d-block
+                p= issue.issue_text
+              div.mt-1.text-small.text-gray
+                if issue.open
+                  span= `opened ${issue.created_on} by ${issue.created_by}`
+                  if issue.updated_on
+                    span= `, updated ${issue.updated_on}`                  
+                else
+                  span= `by ${issue.created_by} was closed ${issue.created_on}`
+              a.btn.btn-primary(href=`/${projectName}/issues/edit?issueId=${issue._id}`) Edit
+              a.btn.btn-danger(href=`/${projectName}/issues/delete?issueId=${issue._id}`) Delete                       
+            div.flex-shrink-0.col-3.pt-2.text-right.pr-3.no-wrap.d-flex.hide-sm
+              span.ml-2.flex-1.flex-shrink-0
+              span.ml-2.flex-1.flex-shrink-0
+              span.ml-2.flex-1.flex-shrink-0
       else
         div
           h3 There's no issues in this project
+    include includes/foot.pug

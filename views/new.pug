@@ -1,21 +1,26 @@
 doctype html
 html
   head
-    title Create new issue
-    link(rel='stylesheet', href='/style.css')
-  body
-    div
+    include includes/head.pug
+    title= projectName    
+  body        
+    div.container   
       h1= `Create new issue in /${projectName}`
-    div.container
       form(action=`/${projectName}/issues`, method="post")
-        label(for="issue[issue_title]") Title
-        input(type="text", name="issue[issue_title]", placeholder="Enter a Title", required="required")
-        label(for="issue[issue_text]") Description
-        textarea(name="issue[issue_text]", cols="30", rows="10" placeholder="Enter a Description", required="required")
-        label(for="issue[created_by]") Author
-        input(type="text", name="issue[created_by]", placeholder="Enter a Author", required="required")
-        label(for="issue[assigned_to]") Assigned
-        input(type="text", name="issue[assigned_to]", placeholder="Assigned to:")
-        label(for="issue[status_text]") Status Text
-        input(type="text", name="issue[status_text]", placeholder="Enter a Status Text")        
-        input(type="submit" value="Submit")
+        div.form-group
+          label(for="issue[issue_title]") Title
+          input(class="form-control" type="text", name="issue[issue_title]", placeholder="Enter a Title", required="required")        
+        div.form-group
+          label(for="issue[issue_text]") Description
+          textarea(class="form-control" name="issue[issue_text]", cols="30", rows="10" placeholder="Enter a Description", required="required")
+        div.form-group
+          label(for="issue[created_by]") Author
+          input(class="form-control" type="text", name="issue[created_by]", placeholder="Enter a Author", required="required")
+        div.form-group
+          label(for="issue[assigned_to]") Assigned
+          input(class="form-control" type="text", name="issue[assigned_to]", placeholder="Assigned to:")
+        div.form-group
+          label(for="issue[status_text]") Status Text
+          input(class="form-control" type="text", name="issue[status_text]", placeholder="Enter a Status Text")        
+        input(class="btn btn-success" type="submit" value="Submit new issue")
+    include includes/foot.pug

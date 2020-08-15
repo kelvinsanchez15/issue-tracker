@@ -47,7 +47,7 @@ app.get('/', (req, res) =>
 //
 app
   .route('/:project/issues')
-  // GET render all issues by project
+  // SHOW ISSUES
   .get(async (req, res) => {
     const projectName = req.params.project;
 
@@ -68,7 +68,7 @@ app
     }
   })
 
-  // POST new issue
+  // CREATE NEW ISSUE
   .post(async (req, res) => {
     const projectName = req.params.project;
 
@@ -93,6 +93,59 @@ app.get('/:project/issues/new', async (req, res) => {
   const projectName = req.params.project;
 
   res.render('new', { projectName });
+});
+
+// EDIT
+app.get('/:project/issues/edit', async (req, res) => {
+  const projectName = req.params.project;
+  const { issueId } = req.query;
+
+  try {
+    // Find issue by id
+    const issue = await Issue.findById(issueId);
+    res.render('edit', { projectName, issue });
+  } catch (err) {
+    if (err) throw err;
+  }
+});
+
+// UPDATE
+app.post('/:project/issues/edit', async (req, res) => {
+  const projectName = req.params.project;
+  const { issueId } = req.query;
+  const { issue } = req.body;
+
+  // Add update date
+  issue.updated_on = Date.now();
+
+  // Handle open/close issue
+  if (issue.open === 'open') {
+    issue.open = true;
+  } else {
+    issue.open = false;
+  }
+
+  try {
+    // Find issue by id and update
+    await Issue.findByIdAndUpdate(issueId, issue, { useFindAndModify: false });
+    res.redirect(`/${projectName}/issues`);
+  } catch (err) {
+    if (err) throw err;
+  }
+});
+
+// DESTROY
+app.get('/:project/issues/delete', async (req, res) => {
+  const projectName = req.params.project;
+  const { issueId } = req.query;
+
+  try {
+    // Find issue by id and remove
+    await Issue.findByIdAndRemove(issueId, { useFindAndModify: false });
+    res.redirect(`/${projectName}/issues`);
+  } catch (err) {
+    if (err) throw err;
+  }
 });
 
 // Routing for API

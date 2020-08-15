@@ -1,0 +1,35 @@
+doctype html
+html
+  head
+    include includes/head.pug
+    title= projectName    
+  body        
+    div.container   
+      h1= `Edit issue in /${projectName}`
+      form(action=`/${projectName}/issues/edit?issueId=${issue._id}`, method="post")
+        div.form-group
+          label(for="issue[issue_title]") Title
+          input(class="form-control" type="text", name="issue[issue_title]", value=issue.issue_title, required="required")        
+        div.form-group
+          label(for="issue[issue_text]") Description
+          textarea(class="form-control" name="issue[issue_text]", cols="30", rows="5", required="required")=issue.issue_text
+        div.form-group
+          label(for="issue[created_by]") Author
+          input(class="form-control" type="text", name="issue[created_by]", value=issue.created_by, required="required")
+        div.form-group
+          label(for="issue[assigned_to]") Assigned
+          input(class="form-control" type="text", name="issue[assigned_to]", value=assigned_to)
+        div.form-group
+          label(for="issue[status_text]") Status Text
+          input(class="form-control" type="text", name="issue[status_text]", value=status_text)
+        div.form-group
+          label(for='issue[open]') Open/Close Issue
+          select(class="form-control" name="issue[open]")
+            if (issue.open)
+              option(value="open", selected='Open') Open
+              option(value="close") Close
+            else
+              option(value="open") Open
+              option(value="close", selected='Close') Close                
+        input(class="btn btn-success" type="submit" value="Edit issue")
+    include includes/foot.pug
