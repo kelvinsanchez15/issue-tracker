@@ -65,7 +65,9 @@ app
       // Loop through issues to set relative time
       issues.forEach((e) => {
         e.created_on = moment(e.created_on).fromNow();
-        e.updated_on = moment(e.updated_on).fromNow();
+        e.updated_on = e.updated_on
+          ? moment(e.updated_on).fromNow()
+          : e.updated_on;
       });
 
       res.render('issues', {

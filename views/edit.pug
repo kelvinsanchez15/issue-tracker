@@ -5,7 +5,7 @@ html
     title= projectName    
   body        
     div.container   
-      h1= `Edit issue in /${projectName}`
+      h1.text-primary= `Edit issue in /${projectName}`
       form(action=`/${projectName}/issues/edit?issueId=${issue._id}`, method="post")
         div.form-group
           label(for="issue[issue_title]") Title

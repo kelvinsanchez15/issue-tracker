@@ -6,7 +6,7 @@ html
   body    
     div.container
       div
-        h1= "Issues in /" + projectName
+        h1.text-primary= "Issues in /" + projectName
         a(href=`/${projectName}/issues/new`)
           input(class="btn btn-success" type="button", value="New Issue")
       div.Box.mt-3
