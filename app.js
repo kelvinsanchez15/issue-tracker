@@ -1,6 +1,7 @@
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
+const moment = require('moment');
 const cors = require('cors');
 require('dotenv').config();
 // Routes
@@ -55,9 +56,17 @@ app
       // Search project in the database and populate all issues
       const foundProject = await Project.findOne({
         name: projectName,
-      }).populate('issues');
+      })
+        .populate('issues')
+        .lean();
       // Save issues in a variable
       const issues = foundProject ? foundProject.issues : null;
+
+      // Loop through issues to set relative time
+      issues.forEach((e) => {
+        e.created_on = moment(e.created_on).fromNow();
+        e.updated_on = moment(e.updated_on).fromNow();
+      });
 
       res.render('issues', {
         projectName,
