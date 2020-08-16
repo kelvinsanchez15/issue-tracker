@@ -1,15 +1,12 @@
 const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
-const moment = require('moment');
 const cors = require('cors');
 require('dotenv').config();
 // Routes
-const apiRoutes = require('./routes/routes');
+const routes = require('./routes/routes');
 // Test runner
 // const runner = require('./test-runner');
-const Project = require('./models/project');
-const Issue = require('./models/issue');
 
 const app = express();
 
@@ -46,132 +43,8 @@ app.get('/', (req, res) =>
   })
 );
 
-//
-app
-  .route('/:project/issues')
-  // SHOW ISSUES
-  .get(async (req, res) => {
-    const projectName = req.params.project;
-    let issues = null;
-
-    try {
-      // Search project in the database and populate all issues
-      const foundProject = await Project.findOne({
-        name: projectName,
-      })
-        .populate('issues')
-        .lean();
-
-      if (foundProject) {
-        // If a project is found save issues in a variable
-        issues = foundProject.issues;
-
-        // Loop through issues to set relative time
-        issues.forEach((e) => {
-          e.created_on = moment(e.created_on).fromNow();
-          e.updated_on = e.updated_on
-            ? moment(e.updated_on).fromNow()
-            : e.updated_on;
-        });
-      }
-
-      res.render('issues', {
-        projectName,
-        issues,
-      });
-    } catch (err) {
-      if (err) throw err;
-    }
-  })
-
-  // CREATE NEW ISSUE
-  .post(async (req, res) => {
-    const projectName = req.params.project;
-
-    try {
-      // Create new issue
-      const newIssue = await Issue.create(req.body.issue);
-      // Check if project exist in the database
-      const foundProject = await Project.findOne({ name: projectName });
-      // If no project is found create one
-      if (!foundProject) {
-        await Project.create({ name: projectName });
-      }
-      // Find project by name and push new issue
-      await Project.findOneAndUpdate(
-        { name: projectName },
-        { $push: { issues: newIssue } },
-        { new: true, useFindAndModify: false }
-      );
-      res.redirect(`/${projectName}/issues`);
-    } catch (err) {
-      res.redirect(`/${projectName}/issues/new`);
-      throw err;
-    }
-  });
-
-// GET render new issue page
-app.get('/:project/issues/new', async (req, res) => {
-  const projectName = req.params.project;
-
-  res.render('new', { projectName });
-});
-
-// EDIT
-app.get('/:project/issues/edit', async (req, res) => {
-  const projectName = req.params.project;
-  const { issueId } = req.query;
-
-  try {
-    // Find issue by id
-    const issue = await Issue.findById(issueId);
-    res.render('edit', { projectName, issue });
-  } catch (err) {
-    if (err) throw err;
-  }
-});
-
-// UPDATE
-app.post('/:project/issues/edit', async (req, res) => {
-  const projectName = req.params.project;
-  const { issueId } = req.query;
-  const { issue } = req.body;
-
-  // Add update date
-  issue.updated_on = Date.now();
-
-  // Handle open/close issue
-  if (issue.open === 'open') {
-    issue.open = true;
-  } else {
-    issue.open = false;
-  }
-
-  try {
-    // Find issue by id and update
-    await Issue.findByIdAndUpdate(issueId, issue, { useFindAndModify: false });
-    res.redirect(`/${projectName}/issues`);
-  } catch (err) {
-    if (err) throw err;
-  }
-});
-
-// DESTROY
-app.get('/:project/issues/delete', async (req, res) => {
-  const projectName = req.params.project;
-  const { issueId } = req.query;
-
-  try {
-    // Find issue by id and remove
-    await Issue.findByIdAndRemove(issueId, { useFindAndModify: false });
-    res.redirect(`/${projectName}/issues`);
-  } catch (err) {
-    if (err) throw err;
-  }
-});
-
 // Routing for API
-app.use('/', apiRoutes);
+app.use('/:project/issues', routes);
 
 // Server listening
 const port = process.env.PORT || 3000;
