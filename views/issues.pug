@@ -22,10 +22,10 @@ html
                 div.mt-1.text-small.text-grey
                   if issue.open
                     span= `opened ${issue.created_on} by ${issue.created_by}`
-                    if issue.updated_on
-                      span= `, updated ${issue.updated_on}`                  
                   else
                     span= `by ${issue.created_by} was closed ${issue.created_on}`
+                  if issue.updated_on
+                    span= `, updated ${issue.updated_on}` 
                 a.btn.btn-primary(href=`/${projectName}/issues/edit?issueId=${issue._id}`) Edit
                 a.btn.btn-danger(href=`/${projectName}/issues/delete?issueId=${issue._id}`) Delete                       
               div.flex-shrink-0.col-3.pt-2.text-right.pr-3.no-wrap.d-flex.hide-sm
