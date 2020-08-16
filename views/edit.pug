@@ -18,10 +18,10 @@ html
           input(class="form-control" type="text", name="issue[created_by]", value=issue.created_by, required="required")
         div.form-group
           label(for="issue[assigned_to]") Assigned
-          input(class="form-control" type="text", name="issue[assigned_to]", value=assigned_to)
+          input(class="form-control" type="text", name="issue[assigned_to]", value=issue.assigned_to)
         div.form-group
           label(for="issue[status_text]") Status Text
-          input(class="form-control" type="text", name="issue[status_text]", value=status_text)
+          input(class="form-control" type="text", name="issue[status_text]", value=issue.status_text)
         div.form-group
           label(for='issue[open]') Open/Close Issue
           select(class="form-control" name="issue[open]")

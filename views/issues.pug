@@ -14,24 +14,36 @@ html
           each issue in issues
             div.d-flex.Box-row.p0-mt-0
               div.flex-shrink-0.pt-2.pl-3
-                span !
+                if issue.open
+                  span
+                    img(img src="/svg/issue-opened.svg", alt="Issue opened icon")
+                else 
+                  span
+                    img(img src="/svg/issue-closed.svg", alt="Issue closed icon")
               div.flex-auto.min-width-0.p-2.pr-3.pr-md-2            
-                span.text-dark.h4= issue.issue_title
+                h4.d-inline-block.text-dark= issue.issue_title
+                if issue.status_text
+                  |                   
+                  span.badge.badge-pill.badge-info.StatusLabel=`status: ${issue.status_text}`  
+                if issue.assigned_to
+                  |                   
+                  span.badge.badge-pill.badge-info.AssignedLabel=`assigned: ${issue.assigned_to}`  
                 div.d-block
                   p= issue.issue_text
-                div.mt-1.text-small.text-grey
-                  if issue.open
-                    span= `opened ${issue.created_on} by ${issue.created_by}`
-                  else
-                    span= `by ${issue.created_by} was closed ${issue.created_on}`
-                  if issue.updated_on
-                    span= `, updated ${issue.updated_on}` 
-                a.btn.btn-primary(href=`/${projectName}/issues/edit?issueId=${issue._id}`) Edit
-                a.btn.btn-danger(href=`/${projectName}/issues/delete?issueId=${issue._id}`) Delete                       
-              div.flex-shrink-0.col-3.pt-2.text-right.pr-3.no-wrap.d-flex.hide-sm
-                span.ml-2.flex-1.flex-shrink-0
-                span.ml-2.flex-1.flex-shrink-0
-                span.ml-2.flex-1.flex-shrink-0
+                div.d-flex.justify-content-between.align-items-end
+                  div.mt-1.text-small.text-grey
+                    if issue.open
+                      span= `opened ${issue.created_on} by ${issue.created_by}`
+                    else
+                      span= `by ${issue.created_by} was closed ${issue.created_on}`
+                    if issue.updated_on
+                      span= `, updated ${issue.updated_on}`                                    
+                  div.buttons
+                    a.btn.btn-primary(role="button", href=`/${projectName}/issues/edit?issueId=${issue._id}`) Edit
+                    a.btn.btn-danger(role="button", href=`/${projectName}/issues/delete?issueId=${issue._id}`) Delete
+                    
+                
+                
         else
           div
             h3 There's no issues in this project
