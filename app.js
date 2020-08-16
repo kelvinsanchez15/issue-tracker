@@ -23,8 +23,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: '*' }));
 
 // Connection to the database and error handling
+const url = 'mongodb://127.0.0.1:27017/issueTrackerDB' || process.env.DB_URI;
 mongoose
-  .connect(process.env.DB_URI, {
+  .connect(url, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -51,6 +52,7 @@ app
   // SHOW ISSUES
   .get(async (req, res) => {
     const projectName = req.params.project;
+    let issues = null;
 
     try {
       // Search project in the database and populate all issues
@@ -59,16 +61,19 @@ app
       })
         .populate('issues')
         .lean();
-      // Save issues in a variable
-      const issues = foundProject ? foundProject.issues : null;
 
-      // Loop through issues to set relative time
-      issues.forEach((e) => {
-        e.created_on = moment(e.created_on).fromNow();
-        e.updated_on = e.updated_on
-          ? moment(e.updated_on).fromNow()
-          : e.updated_on;
-      });
+      if (foundProject) {
+        // If a project is found save issues in a variable
+        issues = foundProject.issues;
+
+        // Loop through issues to set relative time
+        issues.forEach((e) => {
+          e.created_on = moment(e.created_on).fromNow();
+          e.updated_on = e.updated_on
+            ? moment(e.updated_on).fromNow()
+            : e.updated_on;
+        });
+      }
 
       res.render('issues', {
         projectName,
@@ -86,6 +91,12 @@ app
     try {
       // Create new issue
       const newIssue = await Issue.create(req.body.issue);
+      // Check if project exist in the database
+      const foundProject = await Project.findOne({ name: projectName });
+      // If no project is found create one
+      if (!foundProject) {
+        await Project.create({ name: projectName });
+      }
       // Find project by name and push new issue
       await Project.findOneAndUpdate(
         { name: projectName },
