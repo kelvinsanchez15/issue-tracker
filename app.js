@@ -20,7 +20,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: '*' }));
 
 // Connection to the database and error handling
-const url = process.env.DB_URI || 'mongodb://127.0.0.1:27017/issueTrackerDB';
+const url =
+  process.env.NODE_ENV === 'production'
+    ? process.env.DB_URI
+    : 'mongodb://127.0.0.1:27017/issueTrackerDB';
+
 mongoose
   .connect(url, {
     useNewUrlParser: true,
