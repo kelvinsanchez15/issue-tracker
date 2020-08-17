@@ -42,12 +42,42 @@ router
     const projectName = req.params.project;
     let issues = null;
 
+    // Filter
+    const match = {
+      // GET /issues?id=5f3a710fed618c093c160d11
+      ...(req.query.id && { _id: req.query.id }),
+      // GET /issues?author=kelvin123
+      ...(req.query.author && { created_by: req.query.author }),
+      // GET /issues?assigned=mathew159
+      ...(req.query.assigned && { assigned_to: req.query.assigned }),
+      // GET /issues?status=help%please
+      ...(req.query.status && { status_text: req.query.status }),
+      // GET /issues?open=false
+      ...(req.query.open && { open: req.query.open === 'true' }),
+    };
+
+    // Sorter
+    const sort = {};
+
+    // GET /issues?sort=created_on:desc || GET /issues?sort=updated_on:desc
+    if (req.query.sort) {
+      const parts = req.query.sort.split(':');
+      sort[parts[0]] = parts[1] === 'desc' ? -1 : 1;
+    }
+
     try {
       // Search project in the database and populate all issues
       const foundProject = await Project.findOne({
         name: projectName,
       })
-        .populate('issues')
+        .populate({
+          path: 'issues',
+          match,
+          options: {
+            limit: req.query.limit,
+            sort,
+          },
+        })
         .lean();
 
       if (foundProject) {
