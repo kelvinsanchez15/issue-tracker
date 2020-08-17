@@ -14,12 +14,10 @@ html
           each issue in issues
             div.d-flex.Box-row.p0-mt-0
               div.flex-shrink-0.pt-2.pl-3
-                if issue.open
-                  span
-                    img(img src="/svg/issue-opened.svg", alt="Issue opened icon")
-                else 
-                  span
-                    img(img src="/svg/issue-closed.svg", alt="Issue closed icon")
+                if issue.open                  
+                  img(width="24", height="24", src="/svg/issue-opened.svg", alt="Issue opened icon")                   
+                else                   
+                  img(width="24", height="24", src="/svg/issue-closed.svg", alt="Issue closed icon")
               div.flex-auto.min-width-0.p-2.pr-3.pr-md-2            
                 h4.d-inline-block.text-dark= issue.issue_title
                 if issue.status_text
