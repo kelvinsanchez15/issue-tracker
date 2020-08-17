@@ -35,7 +35,7 @@ html
                     if issue.open
                       span= `opened ${issue.created_on} by ${issue.created_by}`
                     else
-                      span= `by ${issue.created_by} was closed ${issue.created_on}`
+                      span= `by ${issue.created_by} was closed ${issue.closed_on}`
                     if issue.updated_on
                       span= `, updated ${issue.updated_on}`                                    
                   div.buttons

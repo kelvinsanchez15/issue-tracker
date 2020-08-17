@@ -8,6 +8,7 @@ const issueSchema = new mongoose.Schema({
   status_text: { type: String, trim: true },
   created_on: { type: Date, default: Date.now },
   updated_on: Date,
+  closed_on: Date,
   open: { type: Boolean, default: true },
 });
 

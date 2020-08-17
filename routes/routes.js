@@ -90,6 +90,9 @@ router
           e.updated_on = e.updated_on
             ? moment(e.updated_on).fromNow()
             : e.updated_on;
+          e.closed_on = e.closed_on
+            ? moment(e.closed_on).fromNow()
+            : e.closed_on;
         });
       }
 
@@ -137,6 +140,7 @@ router.post('/edit', async (req, res) => {
     issue.open = true;
   } else {
     issue.open = false;
+    issue.closed_on = Date.now();
   }
 
   try {
