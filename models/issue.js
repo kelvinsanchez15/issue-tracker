@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const Issue = mongoose.model('Issue', {
+const issueSchema = new mongoose.Schema({
   issue_title: { type: String, required: true, trim: true },
   issue_text: { type: String, required: true, trim: true },
   created_by: { type: String, required: true, trim: true },
@@ -11,4 +11,4 @@ const Issue = mongoose.model('Issue', {
   open: { type: Boolean, default: true },
 });
 
-module.exports = Issue;
+module.exports = mongoose.model('Issue', issueSchema);
