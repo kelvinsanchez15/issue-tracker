@@ -6,9 +6,41 @@ html
   body    
     div.container
       div
-        h1.text-primary= "Issues in /" + projectName
+        a.h1.text-primary.d-block(href=`/${projectName}/issues`)="Issues in /" + projectName        
         a(href=`/${projectName}/issues/new`)
           input(class="btn btn-success" type="button", value="New Issue")
+      form(class="form-inline", action=`/${projectName}/issues`, method="get")
+        
+        div.form-group
+          label(class="sr-only", for="author") author
+          div.input-group
+            div.input-group-prepend 
+              span.input-group-text filter
+            input(class="form-control", type="search", name="author", placeholder="author")        
+        div.form-group
+          label(class="sr-only", for="assigned") assigned
+          input(class="form-control", type="search", name="assigned", placeholder="assigned")        
+        div.form-group
+          label(class="sr-only", for="status") status
+          input(class="form-control", type="search", name="status", placeholder="status")
+        div.form-group
+          label(class="sr-only", for="open") open
+          select(class="form-control" name="open")
+            option(value, selected, disabled) -select-
+            option(value="true") opened
+            option(value="false") closed
+        div.form-group
+          label(class="sr-only", for="sort") sort
+          select(class="form-control" name="sort")
+            option(value, selected, disabled) -sort-
+            option(value="created_on:asc") oldest
+            option(value="created_on:desc") newest            
+            option(value="updated_on:asc") least recently updated
+            option(value="updated_on:desc") recently updated            
+        input(class="btn btn-primary" type="submit" value="Search")
+                
+                     
+          
       div.Box.mt-3
         if issues
           each issue in issues
