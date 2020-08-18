@@ -19,9 +19,10 @@ after('Disconnect DB after all tests', () => {
 });
 
 describe('Functional Tests', () => {
-  describe('POST /api/issues/{project} => object with issue data', () => {
+  // CREATE
+  describe('POST /{project}/issues/ => object with issue data', () => {
     it('Every field filled in', async () => {
-      const res = await chai
+      const response = await chai
         .request(app)
         .post('/apitest/issues')
         .send({
@@ -33,26 +34,73 @@ describe('Functional Tests', () => {
             status_text: 'In QA',
           },
         });
-      expect(res).to.have.status(200);
+      expect(response).to.have.status(200);
+      const issue = await Issue.findOne({}).lean();
+      expect(issue).to.include.all.keys(
+        'issue_title',
+        'issue_text',
+        'created_by',
+        'assigned_to',
+        'status_text'
+      );
     });
 
-    it('Required fields filled in');
-    it('Missing required fields');
+    it('Required fields filled in', async () => {
+      const response = await chai
+        .request(app)
+        .post('/apitest/issues')
+        .send({
+          issue: {
+            issue_title: 'Title',
+            issue_text: 'text',
+            created_by: 'Functional Test - Every field filled in',
+          },
+        });
+      expect(response).to.have.status(200);
+      const issue = await Issue.findOne({}).lean();
+      expect(issue).to.include.all.keys(
+        'issue_title',
+        'issue_text',
+        'created_by'
+      );
+    });
+
+    it('Missing required fields', async () => {
+      const response = await chai
+        .request(app)
+        .post('/apitest/issues')
+        .send({
+          issue: {
+            issue_text: 'text',
+            created_by: 'Functional Test - Every field filled in',
+          },
+        });
+      expect(response).to.have.status(400);
+    });
   });
 
-  describe('PUT /api/issues/{project} => text', () => {
+  // READ
+  describe('GET /{project}/issues/ => Array of objects with issue data', () => {
+    it('No filter', async () => {
+      const response = await chai.request(app).get('/apitest/issues');
+
+      expect(response).to.have.status(200);
+    });
+
+    it('One filter');
+
+    it('Multiple filters');
+  });
+
+  // UPDATE
+  describe('POST /{project}/issues/edit => text', () => {
     it('No body');
     it('One field to update');
     it('Multiple fields to update');
   });
 
-  describe('GET /api/issues/{project} => Array of objects with issue data', () => {
-    it('No filter');
-    it('One filter');
-    it('Multiple filters');
-  });
-
-  describe('DELETE /api/issues/{project} => text', () => {
+  // DELETE
+  describe('POST /{project}/issues/delete => text', () => {
     it('No _id');
     it('Valid _id');
   });
