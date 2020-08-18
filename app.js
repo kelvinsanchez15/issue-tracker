@@ -14,6 +14,7 @@ const app = express();
 app.use(helmet({ contentSecurityPolicy: false }));
 
 // Body parser
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Cors used for FCC testing purposes

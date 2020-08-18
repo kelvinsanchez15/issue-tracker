@@ -5,17 +5,28 @@ const Project = require('../models/project');
 
 const router = express.Router({ mergeParams: true });
 
+// ======================
+// CREATE NEW ISSUE
+// ======================
+router.get('/new', async (req, res) => {
+  const projectName = req.params.project;
+
+  res.render('new', { projectName });
+});
+
 router
   .route('/')
-  // ======================
-  // CREATE NEW ISSUE
-  // ======================
   .post(async (req, res) => {
     const projectName = req.params.project;
+    const issue = new Issue(req.body.issue);
 
     try {
-      // Create new issue
-      const newIssue = await Issue.create(req.body.issue);
+      await issue.save();
+    } catch (err) {
+      return res.status(400).send(err);
+    }
+
+    try {
       // Check if project exist in the database
       const foundProject = await Project.findOne({ name: projectName });
       // If no project is found create one
@@ -25,13 +36,12 @@ router
       // Find project by name and push new issue
       await Project.findOneAndUpdate(
         { name: projectName },
-        { $push: { issues: newIssue } },
+        { $push: { issues: issue } },
         { new: true, useFindAndModify: false }
       );
-      res.redirect(`/${projectName}/issues`);
+      return res.status(201).redirect(`/${projectName}/issues`);
     } catch (err) {
-      res.redirect(`/${projectName}/issues/new`);
-      throw err;
+      return res.status(400).send(err);
     }
   })
 
@@ -108,12 +118,6 @@ router
 // ======================
 // UPDATE
 // ======================
-router.get('/new', async (req, res) => {
-  const projectName = req.params.project;
-
-  res.render('new', { projectName });
-});
-
 router.get('/edit', async (req, res) => {
   const projectName = req.params.project;
   const { issueId } = req.query;
