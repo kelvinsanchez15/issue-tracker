@@ -10,7 +10,6 @@ html
         a(href=`/${projectName}/issues/new`)
           input(class="btn btn-success" type="button", value="New Issue")
       form(class="form-inline", action=`/${projectName}/issues`, method="get")
-        
         div.form-group
           label(class="sr-only", for="author") author
           div.input-group
@@ -37,10 +36,7 @@ html
             option(value="created_on:desc") newest            
             option(value="updated_on:asc") least recently updated
             option(value="updated_on:desc") recently updated            
-        input(class="btn btn-primary" type="submit" value="Search")
-                
-                     
-          
+        input(class="btn btn-primary" type="submit" value="Search")  
       div.Box.mt-3
         if issues
           each issue in issues
@@ -71,9 +67,6 @@ html
                   div.buttons
                     a.btn.btn-primary(role="button", href=`/${projectName}/issues/edit?issueId=${issue._id}`) Edit
                     a.btn.btn-danger(role="button", href=`/${projectName}/issues/delete?issueId=${issue._id}`) Delete
-                    
-                
-                
         else
           div
             h3 There's no issues in this project

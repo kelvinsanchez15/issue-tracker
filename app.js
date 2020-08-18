@@ -52,19 +52,6 @@ app.use('/:project/issues', routes);
 
 // Server listening
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running at port ${port}`);
-  // if (process.env.NODE_ENV === 'test') {
-  //   console.log('Running Tests...');
-  //   setTimeout(() => {
-  //     try {
-  //       runner.run();
-  //     } catch (err) {
-  //       console.log('Tests are not valid:');
-  //       console.log(err);
-  //     }
-  //   }, 1500);
-  // }
-});
+app.listen(port, () => console.log(`Server running at port ${port}`));
 
 module.exports = app; // for testing

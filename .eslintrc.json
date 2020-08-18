@@ -1,8 +1,11 @@
 {
   "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "mocha"],
   "rules": {
     "no-unused-vars": "warn",
     "no-console": "off"
+  },
+  "env": {
+    "mocha": true
   }
 }
