@@ -167,7 +167,7 @@ router.get('/delete', async (req, res) => {
       useFindAndModify: false,
     });
     if (!issue) return res.status(404).send;
-    res.redirect(`/${projectName}/issues`);
+    return res.redirect(`/${projectName}/issues`);
   } catch (err) {
     res.status(500);
     throw err;
