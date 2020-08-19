@@ -10,8 +10,8 @@ const routes = require('./routes/routes');
 
 const app = express();
 
-// Prevent sniff and XSS attacks. PD: CSP disable to avoid inline script error
-app.use(helmet({ contentSecurityPolicy: false }));
+// Prevent sniff and XSS attacks.
+app.use(helmet());
 
 // Body parser
 app.use(express.json());
