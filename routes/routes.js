@@ -27,17 +27,12 @@ router
     }
 
     try {
-      // Check if project exist in the database
-      const foundProject = await Project.findOne({ name: projectName });
-      // If no project is found create one
-      if (!foundProject) {
-        await Project.create({ name: projectName });
-      }
-      // Find project by name and push new issue
+      // Find project by name and update pushing new issue
+      // If no project is found create one using upsert
       await Project.findOneAndUpdate(
         { name: projectName },
         { $push: { issues: issue } },
-        { new: true, useFindAndModify: false }
+        { new: true, upsert: true, useFindAndModify: false }
       );
       return res.status(201).redirect(`/${projectName}/issues`);
     } catch (err) {
