@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const mongoose = require('mongoose');
@@ -33,7 +34,7 @@ const mockIssue3 = {
   status_text: 'status3',
 };
 
-before('Clean DB before each test', async () => {
+before('Clean DB and create mock issues before tests', async () => {
   await Project.deleteMany();
   await Issue.deleteMany();
 
@@ -51,7 +52,9 @@ after('Disconnect DB after all tests', () => {
 });
 
 describe('Functional Tests', () => {
-  // CREATE
+  // ======================
+  // CREATE NEW ISSUE TESTS
+  // ======================
   describe('POST /{project}/issues/ => object with issue data', () => {
     it('Every field filled in', async () => {
       const response = await chai
@@ -124,7 +127,9 @@ describe('Functional Tests', () => {
     });
   });
 
-  // READ
+  // ======================
+  // READ ISSUES TESTS
+  // ======================
   describe('GET /{project}/issues/ => Array of objects with issue data', () => {
     it('No filter', async () => {
       const response = await chai
@@ -183,35 +188,83 @@ describe('Functional Tests', () => {
     });
   });
 
-  // UPDATE
+  // ======================
+  // UPDATE ISSUE TESTS
+  // ======================
   describe('POST /{project}/issues/edit => updated object', () => {
     it('No body', async () => {
-      // const response = await chai
-      //   .request(app)
-      //   .post('/apitest/issues/edit')
-      //   .send({
-      //     issue: {
-      //       issue_title: 'Functional Test - Every field filled in Edited',
-      //       issue_text: 'text',
-      //       created_by: 'tester',
-      //       assigned_to: 'Chai and Mocha',
-      //       status_text: 'In QA',
-      //     },
-      //   });
-      // expect(response).to.have.status(200);
-      // const issue = await Issue.findOne({
-      //   issue_title: 'Functional Test - Every field filled in',
-      // }).lean();
+      const project = await Project.findOne({ name: 'apitest2' })
+        .populate({ path: 'issues' })
+        .lean();
+
+      const issueId = project.issues[0]._id;
+
+      const issueUpdate = {};
+
+      const updatedIssue = await Issue.findByIdAndUpdate(issueId, issueUpdate, {
+        new: true,
+        useFindAndModify: false,
+      });
+
+      expect(updatedIssue).to.be.an('object');
+      expect(updatedIssue).to.include(mockIssue1);
     });
 
-    it('One field to update');
+    it('One field to update', async () => {
+      const project = await Project.findOne({ name: 'apitest2' })
+        .populate({ path: 'issues' })
+        .lean();
 
-    it('Multiple fields to update');
+      const issueId = project.issues[0]._id;
+
+      const issueUpdate = { created_by: 'updated author' };
+
+      const updatedIssue = await Issue.findByIdAndUpdate(issueId, issueUpdate, {
+        new: true,
+        useFindAndModify: false,
+      });
+
+      expect(updatedIssue).to.be.an('object');
+      expect(updatedIssue).to.include(issueUpdate);
+    });
+
+    it('Multiple fields to update', async () => {
+      const project = await Project.findOne({ name: 'apitest2' })
+        .populate({ path: 'issues' })
+        .lean();
+
+      const issueId = project.issues[0]._id;
+
+      const issueUpdate = mockIssue3;
+
+      const updatedIssue = await Issue.findByIdAndUpdate(issueId, issueUpdate, {
+        new: true,
+        useFindAndModify: false,
+      });
+
+      expect(updatedIssue).to.be.an('object');
+      expect(updatedIssue).to.include(mockIssue3);
+    });
   });
 
-  // DELETE
-  describe('POST /{project}/issues/delete => text', () => {
-    it('No _id');
-    it('Valid _id');
+  // ======================
+  // DELETE ISSUE TEST
+  // ======================
+  describe('POST /{project}/issues/delete => deleted object', () => {
+    it('Valid _id', async () => {
+      const project = await Project.findOne({ name: 'apitest2' })
+        .populate({ path: 'issues' })
+        .lean();
+
+      const issueId = project.issues[0]._id;
+
+      const deletedIssue = await Issue.findByIdAndRemove(issueId, {
+        new: true,
+        useFindAndModify: false,
+      });
+
+      expect(deletedIssue).to.be.an('object');
+      expect(deletedIssue).to.include(mockIssue3);
+    });
   });
 });
