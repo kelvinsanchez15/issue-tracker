@@ -106,7 +106,8 @@ router
         issues,
       });
     } catch (err) {
-      if (err) throw err;
+      res.status(400);
+      throw err;
     }
   });
 
@@ -122,7 +123,8 @@ router.get('/edit', async (req, res) => {
     const issue = await Issue.findById(issueId);
     res.render('edit', { projectName, issue });
   } catch (err) {
-    if (err) throw err;
+    res.status(400);
+    throw err;
   }
 });
 
@@ -147,7 +149,8 @@ router.post('/edit', async (req, res) => {
     await Issue.findByIdAndUpdate(issueId, issue, { useFindAndModify: false });
     res.redirect(`/${projectName}/issues`);
   } catch (err) {
-    if (err) throw err;
+    res.status(400);
+    throw err;
   }
 });
 
@@ -160,10 +163,14 @@ router.get('/delete', async (req, res) => {
 
   try {
     // Find issue by id and remove
-    await Issue.findByIdAndRemove(issueId, { useFindAndModify: false });
+    const issue = await Issue.findByIdAndRemove(issueId, {
+      useFindAndModify: false,
+    });
+    if (!issue) return res.status(404).send;
     res.redirect(`/${projectName}/issues`);
   } catch (err) {
-    if (err) throw err;
+    res.status(500);
+    throw err;
   }
 });
 
