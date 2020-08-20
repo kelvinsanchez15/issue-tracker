@@ -42,3 +42,7 @@ body {
   line-height: 1.3em;
   background-color: #5319e7;
 }
+
+.dropdown-menu {
+  min-width: 300px;
+}
