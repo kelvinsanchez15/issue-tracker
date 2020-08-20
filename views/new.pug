@@ -4,8 +4,10 @@ html
     include includes/head.pug
     title= projectName    
   body        
-    div.container   
-      h1= `Create new issue in /${projectName}`
+    div.container
+      div.col.text-center          
+        a.h1.text-dark(href="/") Issue Tracker   
+      a.h2.text-primary.d-block.mb-3(href=`/${projectName}/issues`)="Create new issue in /" + projectName
       form(action=`/${projectName}/issues`, method="post")
         div.form-group
           label(for="issue[issue_title]") Title
@@ -22,5 +24,5 @@ html
         div.form-group
           label(for="issue[status_text]") Status Text
           input(class="form-control" type="text", name="issue[status_text]", placeholder="Enter a Status Text")        
-        input(class="btn btn-success" type="submit" value="Submit new issue")
+        input(class="btn btn-success" type="submit" value="Submit New Issue")
     include includes/foot.pug

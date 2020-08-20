@@ -4,8 +4,10 @@ html
     include includes/head.pug
     title= projectName    
   body        
-    div.container   
-      h1.text-primary= `Edit issue in /${projectName}`
+    div.container
+      div.col.text-center          
+        a.h1.text-dark(href="/") Issue Tracker   
+      a.h2.text-primary.d-block.mb-3(href=`/${projectName}/issues`)="Edit issue in /" + projectName
       form(action=`/${projectName}/issues/edit?issueId=${issue._id}`, method="post")
         div.form-group
           label(for="issue[issue_title]") Title
@@ -31,5 +33,5 @@ html
             else
               option(value="open") Open
               option(value="close", selected='Close') Close                
-        input(class="btn btn-success" type="submit" value="Edit issue")
+        input(class="btn btn-success" type="submit" value="Edit Issue")
     include includes/foot.pug

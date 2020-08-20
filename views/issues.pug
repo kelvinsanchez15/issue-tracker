@@ -5,38 +5,41 @@ html
     title= projectName    
   body    
     div.container
-      div
-        a.h1.text-primary.d-block(href=`/${projectName}/issues`)="Issues in /" + projectName        
-        a(href=`/${projectName}/issues/new`)
-          input(class="btn btn-success" type="button", value="New Issue")
-      form(class="form-inline", action=`/${projectName}/issues`, method="get")
-        div.form-group
-          label(class="sr-only", for="author") author
-          div.input-group
-            div.input-group-prepend 
-              span.input-group-text filter
-            input(class="form-control", type="search", name="author", placeholder="author")        
-        div.form-group
-          label(class="sr-only", for="assigned") assigned
-          input(class="form-control", type="search", name="assigned", placeholder="assigned")        
-        div.form-group
-          label(class="sr-only", for="status") status
-          input(class="form-control", type="search", name="status", placeholder="status")
-        div.form-group
-          label(class="sr-only", for="open") open
-          select(class="form-control" name="open")
-            option(value, selected, disabled) -select-
-            option(value="true") opened
-            option(value="false") closed
-        div.form-group
-          label(class="sr-only", for="sort") sort
-          select(class="form-control" name="sort")
-            option(value, selected, disabled) -sort-
-            option(value="created_on:asc") oldest
-            option(value="created_on:desc") newest            
-            option(value="updated_on:asc") least recently updated
-            option(value="updated_on:desc") recently updated            
-        input(class="btn btn-primary" type="submit" value="Search")  
+      div.col.text-center          
+        a.h1.text-dark(href="/") Issue Tracker
+      a.h2.text-primary.d-block.mb-3(href=`/${projectName}/issues`)="Issues in /" + projectName
+      div.d-flex.justify-content-between
+        div.dropdown.dropright
+          button(class="btn btn-secondary dropdown-toggle", type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false") Filter
+            
+          div.dropdown-menu.w-100
+            form.px-4.py-3(action=`/${projectName}/issues`, method="get")
+              div.form-group
+                label(class="sr-only", for="author") author
+                input(class="form-control", type="search", name="author", placeholder="author")
+              div.form-group
+                label(class="sr-only", for="assigned") assigned
+                input(class="form-control", type="search", name="assigned", placeholder="assigned")        
+              div.form-group
+                label(class="sr-only", for="status") status
+                input(class="form-control", type="search", name="status", placeholder="status")
+              div.form-group
+                label(class="sr-only", for="open") open
+                select(class="form-control" name="open")
+                  option(value, selected, disabled) -select-
+                  option(value="true") opened
+                  option(value="false") closed
+              div.form-group
+                label(class="sr-only", for="sort") sort
+                select(class="form-control" name="sort")
+                  option(value, selected, disabled) -sort-
+                  option(value="created_on:asc") oldest
+                  option(value="created_on:desc") newest            
+                  option(value="updated_on:asc") least recently updated
+                  option(value="updated_on:desc") recently updated            
+              input(class="btn btn-primary" type="submit" value="Search")
+        span       
+            a.btn.btn-success(href=`/${projectName}/issues/new`, role="button") New Issue  
       div.Box.mt-3
         if issues
           each issue in issues
@@ -56,7 +59,7 @@ html
                   span.badge.badge-pill.badge-info.AssignedLabel=`assigned: ${issue.assigned_to}`  
                 div.d-block
                   p= issue.issue_text
-                div.d-flex.justify-content-between.align-items-end
+                div.d-flex.justify-content-between.align-items-end.flex-wrap
                   div.mt-1.text-small.text-grey
                     if issue.open
                       span= `opened ${issue.created_on} by ${issue.created_by}`
@@ -64,7 +67,7 @@ html
                       span= `by ${issue.created_by} was closed ${issue.closed_on}`
                     if issue.updated_on
                       span= `, updated ${issue.updated_on}`                                    
-                  div.buttons
+                  div.buttons.d-flex
                     a.btn.btn-primary(role="button", href=`/${projectName}/issues/edit?issueId=${issue._id}`) Edit
                     a.btn.btn-danger(role="button", href=`/${projectName}/issues/delete?issueId=${issue._id}`) Delete
         else
