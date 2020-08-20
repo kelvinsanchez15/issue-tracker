@@ -39,12 +39,7 @@ app.use(express.static('public'));
 app.set('view engine', 'pug');
 
 // Main route defined
-app.get('/', (req, res) =>
-  res.render('index', {
-    title: 'Issue Tracker',
-    message: 'Here is going to be user stories and project explanation',
-  })
-);
+app.get('/', (req, res) => res.render('index', { title: 'Issue Tracker' }));
 
 // Routing for API
 app.use('/:project/issues', routes);
