@@ -5,8 +5,6 @@ const cors = require('cors');
 require('dotenv').config();
 // Routes
 const routes = require('./routes/routes');
-// Test runner
-// const runner = require('./test-runner');
 
 const app = express();
 
