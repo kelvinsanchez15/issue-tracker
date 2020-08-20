@@ -17,12 +17,12 @@ html
           textarea(class="form-control" name="issue[issue_text]", cols="30", rows="10" placeholder="Enter a Description", required="required")
         div.form-group
           label(for="issue[created_by]") Author
-          input(class="form-control" type="text", name="issue[created_by]", placeholder="Enter a Author", required="required")
+          input(class="form-control" type="text", name="issue[created_by]", placeholder="Enter a Author", required="required", maxlength="20")
         div.form-group
           label(for="issue[assigned_to]") Assigned
-          input(class="form-control" type="text", name="issue[assigned_to]", placeholder="Assigned to:")
+          input(class="form-control" type="text", name="issue[assigned_to]", placeholder="Assigned to:", maxlength="20" )
         div.form-group
           label(for="issue[status_text]") Status Text
-          input(class="form-control" type="text", name="issue[status_text]", placeholder="Enter a Status Text")        
+          input(class="form-control" type="text", name="issue[status_text]", placeholder="Enter a Status Text", maxlength="20")        
         input(class="btn btn-success" type="submit" value="Submit New Issue")
     include includes/foot.pug

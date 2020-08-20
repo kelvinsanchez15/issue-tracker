@@ -17,13 +17,13 @@ html
           textarea(class="form-control" name="issue[issue_text]", cols="30", rows="5", required="required")=issue.issue_text
         div.form-group
           label(for="issue[created_by]") Author
-          input(class="form-control" type="text", name="issue[created_by]", value=issue.created_by, required="required")
+          input(class="form-control" type="text", name="issue[created_by]", value=issue.created_by, required="required", maxlength="20")
         div.form-group
           label(for="issue[assigned_to]") Assigned
-          input(class="form-control" type="text", name="issue[assigned_to]", value=issue.assigned_to)
+          input(class="form-control" type="text", name="issue[assigned_to]", value=issue.assigned_to, maxlength="20")
         div.form-group
           label(for="issue[status_text]") Status Text
-          input(class="form-control" type="text", name="issue[status_text]", value=issue.status_text)
+          input(class="form-control" type="text", name="issue[status_text]", value=issue.status_text, maxlength="20")
         div.form-group
           label(for='issue[open]') Open/Close Issue
           select(class="form-control" name="issue[open]")
