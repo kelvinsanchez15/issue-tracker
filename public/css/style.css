@@ -46,3 +46,7 @@ body {
 .dropdown-menu {
   min-width: 300px;
 }
+
+.buttons a.btn.btn-primary {
+  margin-right: 0.4em;
+}
